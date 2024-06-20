@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            // alert() 띄우는 2가지 방법
+            // 1. 자바스크립트
+            // btn.addEventListener('click', function(){
+            //     alert();
+            // });
+
+            // 2. 제이쿼리
+            $('#btn').click(function () {
+                $.ajax({
+                    type:'post', //요청방식 :post
+                    url:'http://127.0.0.1:8080/delete', //id=1인 요소를 delete 해주세요.
+                    data:{ id:1 }
+                })
+                .done(function(result){}) //성공했을 때의 콜백
+                .fail(function(xhr, textStatus, err){}) //실패했을 떄의 콜백
+            });
+        });
+    </script>
+</head>
+
+<body>
+    hi
+    <button id="btn" class="a">전송</button>
+    <button id="btn2" class="a">전송</button> <!--클래스를 사용하면 그룹화 가능-->
+    <button id="btn3" class="b">전송</button>
+
+</body>
+
+</html>
