@@ -147,7 +147,7 @@ app.post("/edit", function (req, res) {
   req.body.id = new ObjId(req.body.id);
   mydb
     .collection("post")
-    .updateOne({_id : req.body.id}, {$set : {title : req.body.title, content : req.body.content, date : req.body.someDate}})
+    .updateOne({_id : req.body.id}, {$set : {title : req.body.title, content : req.body.content, date : req.body.someDate}}) //updateOne({조건},{변경항목})
     .then((result) => {
       console.log("수정완료");
       res.redirect('/list');
