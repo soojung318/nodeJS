@@ -185,28 +185,29 @@ app.post("/edit", function (req, res) {
     });
 });
 
-let cookieParser = require("cookie-parser");
+let cookieParser = require("cookie-parser"); //설치한 쿠키파서 라이브러리를 포함시켜요
 
-app.use(cookieParser("ncvka0e398423kpfd"));
-app.get("/cookie", function (req, res) {
-  let milk = parseInt(req.signedCookies.milk) + 1000;
-  if (isNaN(milk)) {
-    milk = 0;
+app.use(cookieParser("ncvka0e398423kpfd")); //cookieParser() 미들웨어를 등록해요
+app.get("/cookie", function (req, res) { // /cookie 요청 시 처리할 라우터를 생성해요
+  let milk = parseInt(req.signedCookies.milk) + 1000; //브라우저에서 받은 req.signedcookies.milk 값은 문자열이에요. 1000씩 더하는 연산을 위해 정수로 형변환 해주어요.
+  if (isNaN(milk)) { // 쿠키 생성 전 브라우저가 처음으로 요청한 경우라면 req.cokkies에 NaN이 저장되어 있어요. isNaN() 함수로 현재 쿠키가 NaN인지 확인해요(NaN이면 true)
+    milk = 0; //원활한 연산을 위해 milk 값이 NaN일 경우 0을 대입해요
   }
-  res.cookie("milk", milk, { signed: true });
+  res.cookie("milk", milk, { signed: true }); //milk라는 쿠키를 생성하여 이 값을 쿠키로 브라우저에 보내요
   //res.clearCookie('milk');
-  res.send("product : " + milk + "원"); //send는 한번 호출하고나면 끝. 즉 새로고침해도 두번이상 안생김.
-  res.cookie("name : ","신수정")
+  res.send("product : " + milk + "원"); //현재의 milk값을 브라우저에 표기해요
+                                        //send는 한번 호출하고나면 끝. 즉 새로고침해도 두번이상 안생겨요
+                                        //브라우저에서 서버로 재요청 시 보내온 쿠키 정보를 req 요청 객체를 통해 쿠키 정보를 읽은 후 다시 브라우저로 전송해요
 });
 
-// app.get("/session", function (req, res) {
+// app.get("/session", function (req, res) { //세션 요청 라우터를 생성해요
 //   console.log(req.session.milk);
-//   if(isNaN(req.session.milk))
+//   if(isNaN(req.session.milk)) // 브라우저에서 req.session.milk 요청시 값이 NaN이면 0으로 설정해서 연산이 가능하게 만들어요
 //   {
 //     req.session.milk = 0;
 //   }
-//   req.session.milk = req.session.milk + 1000;
-//   res.send("session : " + req.session.milk + "원");
+//   req.session.milk = req.session.milk + 1000; //세션이 쌓일 때마다 1000씩 누적시켜요
+//   res.send("session : " + req.session.milk + "원"); //세션의 값을 브라우저로 전송해요
 // });
 
 app.get("/login", function (req, res) {
