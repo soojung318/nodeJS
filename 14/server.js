@@ -1,3 +1,4 @@
+//강의 코드
 const mongoclient = require("mongodb").MongoClient;
 const ObjId = require("mongodb").ObjectId;
 const url =
@@ -20,15 +21,15 @@ mongoclient
   });
 
 // MySQL + nodejs 접속 코드
-var mysql = require("mysql2");
-var conn = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "0000",
-  database: "myboard",
-});
+// var mysql = require("mysql2");
+// var conn = mysql.createConnection({
+//   host: "localhost",
+//   user: "root",
+//   password: "0000",
+//   database: "myboard",
+// });
 
-conn.connect();
+// conn.connect();
 
 const express = require("express");
 const app = express();
@@ -38,7 +39,7 @@ const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 //정적 파일 라이브러리 추가
-app.use(express.static("public"));
+app.use(express.static("public")); //static 미들웨어 설정
 
 app.get("/book", function (req, res) {
   res.send("도서 목록 관련 페이지입니다.");
@@ -47,19 +48,25 @@ app.get("/", function (req, res) {
   res.render("index.ejs");
 });
 app.get("/list", function (req, res) {
+  // mysql
   //   conn.query("select * from post", function (err, rows, fields) {
   //     if (err) throw err;
   //     console.log(rows);
   //   });
-  mydb
-    .collection("post")
-    .find()
-    .toArray()
-    .then((result) => {
-      console.log(result);
-      res.render("list.ejs", { data: result });
-    });
+  list(req, res);
+
 });
+
+function list(req,res){
+  mydb
+  .collection("post")
+  .find()
+  .toArray()
+  .then((result) => {
+    console.log(result);
+    res.render("list.ejs", { data: result });
+  });
+}
 
 //'/enter' 요청에 대한 처리 루틴
 app.get("/enter", function (req, res) {
@@ -150,7 +157,8 @@ app.post("/edit", function (req, res) {
     .updateOne({_id : req.body.id}, {$set : {title : req.body.title, content : req.body.content, date : req.body.someDate}}) //updateOne({조건},{변경항목})
     .then((result) => {
       console.log("수정완료");
-      res.redirect('/list');
+      //res.redirect('/list');
+      list(req, res);
     })
     .catch((err) => {
       console.log(err);

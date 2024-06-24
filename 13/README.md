@@ -78,3 +78,7 @@ mydb.collection('post').deleteOne(req.body)
 - ObjectId는 RDBMS에서 Primary Key와 같은 고유키를 의미한다.
 - 삭제 요청을 보낼 때는 이 ObjectId 형식에 맞춰야 한다.
 - 
+----
+## 공부할 것
+- express
+- ejs

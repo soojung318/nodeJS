@@ -3,7 +3,7 @@ const dotenv = require('dotenv').config();
 const mongoclient = require("mongodb").MongoClient;
 const ObjId = require("mongodb").ObjectId;
 //const url = process.env.DB_URL;
-const url = "mongodb+srv://admin:1111@cluster0.hmvwkf5.mongodb.net/?retryWrites=true&w=majority";
+const url = "mongodb+srv://admin:1234@cluster0.qefoj4b.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 let mydb;
 mongoclient
   .connect(url)
