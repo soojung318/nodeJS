@@ -195,7 +195,8 @@ app.get("/cookie", function (req, res) {
   }
   res.cookie("milk", milk, { signed: true });
   //res.clearCookie('milk');
-  res.send("product : " + milk + "원");
+  res.send("product : " + milk + "원"); //send는 한번 호출하고나면 끝. 즉 새로고침해도 두번이상 안생김.
+  res.cookie("name : ","신수정")
 });
 
 // app.get("/session", function (req, res) {
