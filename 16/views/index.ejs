@@ -10,7 +10,7 @@
     <%- include('menu.html') %> 
       
     <h1>홈입니다.</h1>
-    <% if(user){ %>
+    <% if(typeof user !== 'undefined' && user){ %>
     <h3>반갑습니다. <%= user.userid %>님.</h3>
     <a href = "/logout">로그아웃</a>
     <% }else{%>
