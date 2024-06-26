@@ -1,7 +1,7 @@
 const mongoclient = require("mongodb").MongoClient;
 const ObjId = require("mongodb").ObjectId;
 const url =
-  "mongodb+srv://admin:1111@cluster0.hmvwkf5.mongodb.net/?retryWrites=true&w=majority";
+  `mongodb+srv://admin:1234@cluster0.qefoj4b.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 let mydb;
 mongoclient
   .connect(url)
@@ -20,11 +20,11 @@ mongoclient
   });
 
 // MySQL + nodejs 접속 코드
-var mysql = require("mysql");
+var mysql = require("mysql2");
 var conn = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "123456",
+  password: "0000",
   database: "myboard",
 });
 

@@ -1,30 +1,37 @@
 const mongoclient = require("mongodb").MongoClient;
 const ObjId = require("mongodb").ObjectId;
 const url =
-  "mongodb+srv://admin:1111@cluster0.hmvwkf5.mongodb.net/?retryWrites=true&w=majority";
+  `mongodb+srv://admin:1234@cluster0.qefoj4b.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 let mydb;
 mongoclient
   .connect(url)
   .then((client) => {
+    console.log("몽고디비 접속 성공")
     mydb = client.db("myboard");
+
+    //강사님 코드
+    // https.createServer(options, app).listen(443, () => {
+    //   console.log('HTTPS Server running on port 443');
+    // });
     // mydb.collection('post').find().toArray().then(result =>{
     //     console.log(result);
     // })
 
+    //원본코드
     app.listen(8080, function () {
       console.log("포트 8080으로 서버 대기중 ... ");
     });
   })
   .catch((err) => {
-    console.log(err);
+    console.log(err); //접속실패시 콘솔에 에러 찍어줌.
   });
 
 // MySQL + nodejs 접속 코드
-var mysql = require("mysql");
+var mysql = require("mysql2");
 var conn = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "123456",
+  password: "0000",
   database: "myboard",
 });
 
@@ -37,18 +44,18 @@ const sha = require('sha256');
 
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
-const FacebookStrategy = require("passport-facebook").Strategy;
+const FacebookStrategy = require("passport-facebook").Strategy; //facebook 인증
 
 let session = require("express-session");
 app.use(
   session({
     secret: "dkufe8938493j4e08349u",
-    resave: false,
-    saveUninitialized: true,
+    resave: false, //매번 세션 새로 받을거야?
+    saveUninitialized: false, //세션 다 저장할거야?
   })
 );
 
-app.use(passport.initialize());
+app.use(passport.initialize()); //passport 등록
 app.use(passport.session());
 
 //body-parser 라이브러리 추가
@@ -236,18 +243,18 @@ passport.deserializeUser(function (user, done) {
   console.log("deserializeUser");
 
   mydb
-  .collection("account")
-  .findOne({ userkey : user.userkey })
-  .then((result) => {
-    console.log(result);
-    done(null, result);
-  })
+    .collection("account")
+    .findOne({ userkey: user.userkey })
+    .then((result) => {
+      console.log(result);
+      done(null, result);
+    })
 });
 
 app.post(
   "/login",
   passport.authenticate("local", {
-    succeessRedirect : '/',
+    succeessRedirect: '/',
     failureRedirect: "/fail",
   }),
   function (req, res) {
@@ -338,6 +345,7 @@ app.post("/signup", function (req, res) {
 });
 
 
+// facebook 인증받아오기
 app.get(
   '/facebook',
   passport.authenticate(
@@ -350,50 +358,53 @@ app.get(
   passport.authenticate(
     'facebook',
     {
-      succeessRedirect : '/',
-      failureRedirect: "/fail",
+      succeessRedirect: '/', //성공했을때실행
+      failureRedirect: "/fail", //실패했을때
     }),
-    function (req, res) {
-      console.log(req.session);
-      console.log(req.session.passport);
-      res.render("index.ejs", { user: req.session.passport });
-    }
+  function (req, res) {
+    console.log(req.session);
+    console.log(req.session.passport);
+    res.render("index.ejs", { user: req.session.passport });
+  }
 );
 
-passport.use(new FacebookStrategy({
+passport.use(new FacebookStrategy({ 
+  //인자1 : 생성자의 argument들
   clientID: '170983382262864',
   clientSecret: '1227b1002a055280eac4a047d76844a4',
   callbackURL: "/facebook/callback"
 },
-function(accessToken, refreshToken, profile, done) {
-  console.log(profile);
-  var authkey = 'facebook'+ profile.id;
-  var authName = profile.displayName;
+//인자2 : 콜백함수
+  function (accessToken, refreshToken, profile, done) { //done: 어떠한 콜백을 호출함
+    console.log('profile<<',profile); //제대로 프로필에 정보가 들어왔는지, 뭐가들어왔는지 찍어봄
+    var authkey = 'facebook' + profile.id;
+    var authName = profile.displayName;
 
-  console.log(authName);
-  console.log(authkey);
+    console.log('authName<<',authName);
+    console.log('authKey<<',authkey);
 
-  let loop = 0;
-  while(loop < 2)
-  {
-    console.log(loop);
-    mydb
-      .collection("account")
-      .findOne({ userkey: authkey })
-      .then((result) => {
-        if(result != null){
-          done(null, result);
-        }else{
-          mydb
-          .collection("account")
-          .insertOne({
-            userkey : authkey,
-            userid: authName,
-          })
-        }
-      }).catch((error) => {
-        done(null, false, error);
-      })
+    let loop = 0;
+    while (loop < 2) {
+      console.log(loop);
+      mydb
+        .collection("account")
+        .findOne({ userkey: authkey }) // 이미 로그인저장 정보가 있을 수 있으니 기존의 정보가 있는지 확인하기위해서 db에서 찾아본후
+        .then((result) => { //그걸 result에 저장하고
+          if (result != null) { // result가 비어있지 않으면==디비에서 정보를 찾았다면
+            console.log("페이스북 사용자를 우리 DB에서 찾았음");
+            done(null, result); //done()호출==콜백으로 넘어간다==다음 흐름으로 넘어간다 
+          } else {// 비어있다면==디비에서 정보를 찾지 못했다면 디비에 새로운 키와 이름을 등록한다.
+            console.log("3-1 페이스북 사용자를 우리 DB에서 못 찾았음")
+            mydb
+              .collection("account")
+              .insertOne({
+                userkey: authkey,
+                userid: authName,
+              })
+          }
+        }).catch((error) => {
+          done(null, false, error);
+        })
       loop++;
     }
   }

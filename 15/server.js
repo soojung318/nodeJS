@@ -212,11 +212,11 @@ app.get("/cookie", function (req, res) { // /cookie 요청 시 처리할 라우�
 
 app.get("/login", function (req, res) {
   console.log(req.session);
-  if (req.session.user) {
+  if (req.session.user) { // 사용자의 세션이 이미 등록되어 있다면 새로운 홈 화면인 index.ejs로 이동해요. 이때 페이지에 {user: req.session.user} 데이터를 넘겨줘요
     console.log("세션 유지");
     //res.send('로그인 되었습니다.');
     res.render("index.ejs", { user: req.session.user });
-  } else {
+  } else { 
     console.log("로그인 페이지");
     res.render("login.ejs");
   }
@@ -234,9 +234,9 @@ app.post("/login", function (req, res) {
       // console.log(md5(req.body.userpw));
       if (result.userpw == sha(req.body.userpw)) {
         req.session.user = req.body;
-        console.log("새로운 로그인");
+        console.log("새로운 로그인"); //현재의 로그인이 첫 번째 로그인임을 출력한다.
         //res.send('로그인 되었습니다.');
-        res.render("index.ejs", { user: req.session.user });
+        res.render("index.ejs", { user: req.session.user }); //처음 로그인에 성공하면 홈화면으로 이동. 홈화면에 {user:req.}
       } else {
         //res.send('비밀번호가 틀렸습니다.');
         res.render("login.ejs");
