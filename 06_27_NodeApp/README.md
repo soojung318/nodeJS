@@ -1,5 +1,5 @@
-## ERR 모음
-### 1️⃣ connection error: MongoParseError: option usecreateindex is not supported
+# ERR 모음
+## 1️⃣ connection error: MongoParseError: option usecreateindex is not supported
 
 몽구스 <a href="https://mongodb.github.io/node-mongodb-native/3.3/reference/unified-topology/">공식문서</a>에는
 ```
@@ -15,11 +15,18 @@ useNewUrlParser, useUnifiedTopology, useFindAndModify, and useCreateIndex are no
     });
 
 ```
-----
-### 2️⃣ MongoServerSelectionError: 946C0000:error:0A000438:SSL routines:ssl3_read_bytes:tlsv1 alert internal error:c:\ws\deps\openssl\openssl\ssl\record\rec_layer_s3.c:1590:SSL alert number 80
+
+## 2️⃣ MongoServerSelectionError: 946C0000:error:0A000438:SSL routines:ssl3_read_bytes:tlsv1 alert internal error:c:\ws\deps\openssl\openssl\ssl\record\rec_layer_s3.c:1590:SSL alert number 80
 
 MongoDB Atlas에서 새로운 IP 추가해주면 된다.
 
-----
-### 3️⃣ MySQL Workbench에서 쿼리문 에러가 날 때 테이블 생성하는 다른 방법
+
+## 3️⃣ MySQL Workbench에서 쿼리문 에러가 날 때 테이블 생성하는 다른 방법
 <a href="https://pinetreeday.tistory.com/145">테이블 생성하는 다른 방법</a>
+
+
+## 4️⃣ Error: Cannot find module 'dotenv'
+dotenv는 내장객체라던데 난 이 모듈이 없는 것 같아서 따로 설치했다.
+```
+npm install --save dotenv 
+```
