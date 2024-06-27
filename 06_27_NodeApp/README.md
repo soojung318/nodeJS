@@ -18,6 +18,7 @@ useNewUrlParser, useUnifiedTopology, useFindAndModify, and useCreateIndex are no
 
 ## 2️⃣ MongoServerSelectionError: 946C0000:error:0A000438:SSL routines:ssl3_read_bytes:tlsv1 alert internal error:c:\ws\deps\openssl\openssl\ssl\record\rec_layer_s3.c:1590:SSL alert number 80
 
+또는 테이블을 찾지 못한다는 에러가 뜨기도 한다.<br>
 MongoDB Atlas에서 새로운 IP 추가해주면 된다.
 
 
