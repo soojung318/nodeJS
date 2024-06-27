@@ -4,6 +4,9 @@ const express = require("express");
 
 const app = express();
 
+const bodyParser = require('body-parser');
+app.use(bodyParser.urlencoded({extended:true})); //여러객체가 중첩되어 있어도 처리 가능하게
+
 app.get('/', (req, res) => {
     res.render("index.ejs");
 });
