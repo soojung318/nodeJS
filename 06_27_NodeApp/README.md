@@ -30,3 +30,7 @@ dotenv는 내장객체라던데 난 이 모듈이 없는 것 같아서 따로 �
 ```
 npm install --save dotenv 
 ```
+또는
+```
+npm install --save dotenv-extended
+```
