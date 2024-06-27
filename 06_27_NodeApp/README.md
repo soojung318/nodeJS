@@ -1,5 +1,12 @@
 ## ERR 모음
-### 1️⃣ connection error: MongoParseError: option usecreateindex is not supported
+### 1️⃣ DB 접속 실패 MongoParseError: option useenewurlparser is not supported
+
+```
+Warning: useUnifiedTopology is a deprecated option:
+useUnifiedTopology has no effect since Node.js Driver version 4.0.0
+and will be removed in the next major version (Use `node --trace-warnings ...`
+to show where the warning was created)
+```
 
 몽구스 <a href="https://mongodb.github.io/node-mongodb-native/3.3/reference/unified-topology/">공식문서</a>에는
 ```
