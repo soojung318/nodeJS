@@ -80,15 +80,20 @@ router.post("/account/save", async (req, res) => {
     // res.render("save ok");/
 });
 
+// 로그인 처리
+router.post('/account/login', async (req, res) => {
+    console.log(req.body);
+    // console.log(("GET /login 처리 시작"));
+    // try {
+    //     const { mongodgb, mysqldb } = await setup();
+    //     res.send('로그인 화면 : DB 사용 가능');
+    // } catch (err) {
+    //     res.status(500).send('DB 연결 실패');
+    // }
 
-router.get('/login', async (req, res) => {
-    console.log(("GET /login 처리 시작"));
-    try {
-        const { mongodgb, mysqldb } = await setup();
-        res.send('로그인 화면 : DB 사용 가능');
-    } catch (err) {
-        res.status(500).send('DB 연결 실패');
-    }
+    //login ok 상황연출
+    res.render('index.ejs');
+    
 })
 
 //라우터는 마지막에 항상 방출해야 한다.

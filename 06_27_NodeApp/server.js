@@ -14,7 +14,7 @@ app.get('/', (req, res) => {
 app.use('/', require('./routes/account')); // '/'로 시작하는 모든~ 이라는 뜻. context임
 
 //포트 열어주기
-app.listen(8080, async () => {
+app.listen(process.env.WEB_PORT, async () => {
     await setup(); //setup 함수를 async(비동기)로 만들었기 때문에 위 코드가 다 실행될 동안 기다려주어야하니 await 쓰기
     console.log("8080 서버가 준비되었습니다...");
 });
