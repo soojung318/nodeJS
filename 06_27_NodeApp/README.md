@@ -1,5 +1,5 @@
 ## ERR 모음
-### connection error: MongoParseError: option usecreateindex is not supported
+### 1️⃣ connection error: MongoParseError: option usecreateindex is not supported
 
 몽구스 <a href="https://mongodb.github.io/node-mongodb-native/3.3/reference/unified-topology/">공식문서</a>에는
 ```
