@@ -1,7 +1,7 @@
 ## ERR 모음
 ### connection error: MongoParseError: option usecreateindex is not supported
 
-몽구스 공식문서에는
+몽구스 <a href="https://mongodb.github.io/node-mongodb-native/3.3/reference/unified-topology/">공식문서</a>에는
 ```
 No More Deprecation Warning Options
 useNewUrlParser, useUnifiedTopology, useFindAndModify, and useCreateIndex are no longer supported options. Mongoose 6 always behaves as if useNewUrlParser, useUnifiedTopology, and useCreateIndex are true, and useFindAndModify is false. Please remove these options from your code.
