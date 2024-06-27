@@ -3,6 +3,11 @@ const setup = require('./db_setup'); //export 되어 있는 애가 옴. db_setup
 const express = require("express");
 
 const app = express();
+
+app.get('/', (req, res) => {
+    res.render("index.ejs");
+});
+
 app.use('/', require('./routes/account')); // '/'로 시작하는 모든~ 이라는 뜻. context임
 
 //포트 열어주기

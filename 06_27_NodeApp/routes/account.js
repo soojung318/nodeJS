@@ -1,6 +1,7 @@
 const router = require("express").Router(); //라우터 꺼내온다
 const setup = require('../db_setup');
 
+/* server.js로 app.get으로 이동
 //⭐get()이 routing 함수. router는 routing 객체가 아니다.
 router.get('/', async (req, res) => {
     console.log("GET / 처리 시작");
@@ -11,7 +12,7 @@ router.get('/', async (req, res) => {
         res.status(500).send('DB 연결 실패');
     }
 });
-
+*/
 router.get('/login', async (req, res) => {
     console.log(("GET /login 처리 시작"));
     try {
