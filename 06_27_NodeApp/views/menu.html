@@ -22,7 +22,7 @@
           <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/post/list">게시글목록</a>
+          <a class="nav-link disabled logined" href="/post/list">게시글목록</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="/account/enter">회원가입</a>
@@ -45,7 +45,13 @@
 const uid = $.cookie('uid'); //쿠키 객체 사용하려면 jquery 쿠키 라이브러리 가져와야함
 // 쿠키 있으면 logout 버튼이 보인다
 if(uid){
-  $('#loginSpan').html(`<button>logout</button>`); //$<< 사용하려면 jquery 라이브러리 추가해야함
+  $('.logined').removeClass("disabled"); 
+  $('#loginSpan').html(`${uid} <button onclick='logout()'>logout</button>`); //$<< 사용하려면 jquery 라이브러리 추가해야함
+}
+
+function logout(){
+  $.removeCookie('uid',{path:'/'});
+  location.href='/account/logout';
 }
 
 </script>

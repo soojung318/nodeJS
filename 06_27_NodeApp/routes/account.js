@@ -68,14 +68,14 @@ router.post("/account/save", async (req, res) => {
                     .catch(err => {
                         console.log(err);
                         //res.status(500).send();
-                        res.render('enter.ejs', { data: { alertMsg: '회원가입 실패' } }); 
+                        res.render('enter.ejs', { data: { alertMsg: '회원가입 실패' } });
                     });
             }
         })
         .catch(err => {
             console.log(err);
             //res.status(500).send();
-            res.render('enter.ejs', { data: { alertMsg: '회원가입 실패' } }); 
+            res.render('enter.ejs', { data: { alertMsg: '회원가입 실패' } });
         });
     // res.render("save ok");/
 });
@@ -83,6 +83,39 @@ router.post("/account/save", async (req, res) => {
 // 로그인 처리
 router.post('/account/login', async (req, res) => {
     console.log(req.body);
+    const { mongodb, mysqldb } = await setup();
+    mongodb.collection('account')
+        .findOne({ userid: req.body.userid })
+        .then(result => {
+            if (result) { //결과가 있으면 쏠트를 mysql 에서 찾아옴
+                const sql = `select salt from usersalt where userid=?`; //?는 쿼리문의 [] 부분이 들어감
+                mysqldb.query(sql, [req.body.userid],
+                    (err, rows, fields) => {
+                        const salt = rows[0].salt;
+                        const hashPW = sha(req.body.userpw + salt);
+                        if (result.userpw == hashPW) { //입력값과 디비에 저장된 해쉬값이 같으면 로그인성공
+                            //로그인 성공
+                            req.body.userpw = hashPW; //입력된 pw를 해쉬된 pw로 바꿈.
+                            req.session.user = req.body; // 그걸가지고 serialize 함.
+                            res.cookie('uid', req.body.userid); // (key,value)
+                            res.render('index.ejs');
+                        } else {
+                            // 입력한 pw와 디비에 저장된 pw(해쉬값)이 다를 경우 >> 로그인 실패
+                            res.render('login.ejs',{data:{alertMsg:'다시 로그인 해주세요'}}); // 자세히 에러간 난 것을 알려주지 않는 것도 보안의 한 방법이다
+                        }
+                    });
+            } else {
+                //로그인 실패
+                res.render('login.ejs',{data:{alertMsg:'다시 로그인 해주세요'}});
+            }
+        })
+        .catch(err => {
+            //로그인실패
+            res.render('login.ejs',{data:{alertMsg:'다시 로그인 해주세요'}});
+
+        });
+
+
     // console.log(("GET /login 처리 시작"));
     // try {
     //     const { mongodgb, mysqldb } = await setup();
@@ -91,10 +124,13 @@ router.post('/account/login', async (req, res) => {
     //     res.status(500).send('DB 연결 실패');
     // }
 
-    //login ok 상황연출
-    res.render('index.ejs');
-    
-})
+
+
+});
+router.get('/account/logout', (req, res) => {
+    req.session.destroy();
+    res.render('index.ejs'); //destroy 한 다음에 index 페이지로 forward 한다
+});
 
 //라우터는 마지막에 항상 방출해야 한다.
 module.exports = router;
